@@ -1,0 +1,107 @@
+
+
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ממיר מקלדת דו-כיווני</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 300px;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ממיר מקלדת דו-כיווני</h1>
+        <textarea id="input" placeholder="הכנס טקסט כאן" dir="auto"></textarea>
+        <button onclick="convert()">המר</button>
+        <textarea id="output" placeholder="התוצאה תופיע כאן" readonly dir="auto"></textarea>
+    </div>
+
+    <script>
+        const hebrewToEnglish = {
+            'ק': 'e', 'ר': 'r', 'א': 't', 'ט': 'y', 'ו': 'u', 'ן': 'i', 'ם': 'o', 'פ': 'p', 
+            'ש': 'a', 'ד': 's', 'ג': 'd', 'כ': 'f', 'ע': 'g', 'י': 'h', 'ח': 'j', 'ל': 'k', 
+            'ך': 'l', 'ף': ';', 'ז': 'z', 'ס': 'x', 'ב': 'c', 'ה': 'v', 'נ': 'b', 'מ': 'n', 
+            'צ': 'm', 'ת': ',', 'ץ': '.', '/': 'q', "'": 'w',
+            ']': '[', '[': ']', 
+            '.': '/', ',': "'",
+            ';': ',', 
+            '-': '-', '=': '=',
+            '\\': '\\',
+            '!': '!', '@': '@', '#': '#', '$': '$', '%': '%', '^': '^', '&': '&', '*': '*', ')': ')', '(': '(',
+            '}': '}', '{': '{',
+            ':': ':', '"': '"',
+            '_': '_', '+': '+',
+            '|': '|',
+            '>': '>', '<': '<',
+            '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '0': '0'
+        };
+
+        const englishToHebrew = {};
+        for (let [key, value] of Object.entries(hebrewToEnglish)) {
+            englishToHebrew[value] = key;
+        }
+
+        // הוספת המרה עבור האות "ת"
+        englishToHebrew[','] = 'ת';
+
+        function isHebrew(text) {
+            return /[\u0590-\u05FF]/.test(text);
+        }
+
+        function convert() {
+            const input = document.getElementById('input').value;
+            const isHebrewInput = isHebrew(input);
+            const mapping = isHebrewInput ? hebrewToEnglish : englishToHebrew;
+            
+            let output = '';
+            for (let char of input) {
+                output += mapping[char] || char;
+            }
+            
+            document.getElementById('output').value = output;
+            
+            document.getElementById('input').dir = isHebrewInput ? 'rtl' : 'ltr';
+            document.getElementById('output').dir = isHebrewInput ? 'ltr' : 'rtl';
+        }
+    </script>
+</body>
+</html>
+```
